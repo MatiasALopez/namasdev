@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -231,6 +232,154 @@ namespace namasdev.Core.UnitTests.Reflection
             bool resultado = ReflectionUtilidades.TodasLasPropiedadesDelObjetoTienenValorDefault(obj);
 
             Assert.IsFalse(resultado);
+        }
+
+        #endregion
+
+        #region ObtenerAtributoDeCampo
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void ObtenerAtributoDeCampo_TipoNull_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDeCampo<System.ComponentModel.DescriptionAttribute>(null, "Campo");
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void ObtenerAtributoDeCampo_NombreCampoNull_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDeCampo<System.ComponentModel.DescriptionAttribute>(typeof(Objeto), null);
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void ObtenerAtributoDeCampo_NombreCampoVacio_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDeCampo<System.ComponentModel.DescriptionAttribute>(typeof(Objeto), String.Empty);
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(MissingMemberException))]
+        public void ObtenerAtributoDeCampo_NombreDeCampoInexistente_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDeCampo<System.ComponentModel.DescriptionAttribute>(typeof(Objeto), "Inexistente");
+        }
+
+        [TestMethod]
+        public void ObtenerAtributoDeCampo_TipoYNombreDePropiedadDeObjeto_ResultadoOk()
+        {
+            Type tipo = typeof(Objeto);
+            string nombreCampo = "CampoTexto";
+
+            var resAtributoDesc = ReflectionUtilidades.ObtenerAtributoDeCampo<System.ComponentModel.DescriptionAttribute>(tipo, nombreCampo);
+            var resAtributoCat = ReflectionUtilidades.ObtenerAtributoDeCampo<CategoryAttribute>(tipo, nombreCampo);
+
+            var esperadoAtributoDesc = new System.ComponentModel.DescriptionAttribute(Objeto.TEXTO_DESCRIPCION);
+            var esperadoAtributoCat = new CategoryAttribute(Objeto.TEXTO_CATEGORIA);
+
+            Assert.AreEqual(
+                expected: esperadoAtributoDesc.Description,
+                actual: resAtributoDesc.Description,
+                message: "Description");
+
+            Assert.AreEqual(
+                expected: esperadoAtributoCat.Category,
+                actual: resAtributoCat.Category,
+                message: "Category");
+        }
+
+        [TestMethod]
+        public void ObtenerAtributoDeCampo_TipoYNombreDeEnum_ResultadoOk()
+        {
+            Type tipo = typeof(Enumeracion);
+            string nombreCampo = Enumeracion.Opcion1.ToString();
+
+            var res = ReflectionUtilidades.ObtenerAtributoDeCampo<System.ComponentModel.DescriptionAttribute>(tipo, nombreCampo);
+
+            var esperado = new System.ComponentModel.DescriptionAttribute("Opción 1");
+
+            Assert.AreEqual(
+                expected: esperado,
+                actual: res);
+        }
+
+        #endregion
+
+        #region ObtenerAtributoDePropiedad
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void ObtenerAtributoDePropiedad_TipoNull_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDePropiedad<System.ComponentModel.DescriptionAttribute>(null, "Propiedad");
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void ObtenerAtributoDePropiedad_NombrePropiedadNull_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDePropiedad<System.ComponentModel.DescriptionAttribute>(typeof(Objeto), null);
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void ObtenerAtributoDePropiedad_NombrePropiedadVacio_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDePropiedad<System.ComponentModel.DescriptionAttribute>(typeof(Objeto), String.Empty);
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(MissingMemberException))]
+        public void ObtenerAtributoDePropiedad_NombreDePropiedadInexistente_ArrojaException()
+        {
+            ReflectionUtilidades.ObtenerAtributoDePropiedad<System.ComponentModel.DescriptionAttribute>(typeof(Objeto), "Inexistente");
+        }
+
+        [TestMethod]
+        public void ObtenerAtributoDePropiedad_TipoYNombreDePropiedadDeObjeto_ResultadoOk()
+        {
+            Type tipo = typeof(Objeto);
+            string nombrePropiedad = "Texto";
+
+            var resAtributoDesc = ReflectionUtilidades.ObtenerAtributoDePropiedad<System.ComponentModel.DescriptionAttribute>(tipo, nombrePropiedad);
+            var resAtributoCat = ReflectionUtilidades.ObtenerAtributoDePropiedad<CategoryAttribute>(tipo, nombrePropiedad);
+
+            var esperadoAtributoDesc = new System.ComponentModel.DescriptionAttribute(Objeto.TEXTO_DESCRIPCION);
+            var esperadoAtributoCat = new CategoryAttribute(Objeto.TEXTO_CATEGORIA);
+
+            Assert.AreEqual(
+                expected: esperadoAtributoDesc.Description,
+                actual: resAtributoDesc.Description,
+                message: "Description");
+
+            Assert.AreEqual(
+                expected: esperadoAtributoCat.Category,
+                actual: resAtributoCat.Category,
+                message: "Category");
+        }
+
+        [TestMethod]
+        public void ObtenerAtributoDePropiedad_TipoYNombreDePropiedadDeObjetoDerivado_ResultadoOk()
+        {
+            Type tipo = typeof(ObjetoDerivado);
+            string nombrePropiedad = "Texto";
+
+            var resAtributoDesc = ReflectionUtilidades.ObtenerAtributoDePropiedad<System.ComponentModel.DescriptionAttribute>(tipo, nombrePropiedad);
+            var resAtributoCat = ReflectionUtilidades.ObtenerAtributoDePropiedad<CategoryAttribute>(tipo, nombrePropiedad);
+
+            var esperadoAtributoDesc = new System.ComponentModel.DescriptionAttribute(Objeto.TEXTO_DESCRIPCION);
+            var esperadoAtributoCat = new CategoryAttribute(Objeto.TEXTO_CATEGORIA);
+
+            Assert.AreEqual(
+                expected: esperadoAtributoDesc.Description,
+                actual: resAtributoDesc.Description,
+                message: "Description");
+
+            Assert.AreEqual(
+                expected: esperadoAtributoCat.Category,
+                actual: resAtributoCat.Category,
+                message: "Category");
         }
 
         #endregion

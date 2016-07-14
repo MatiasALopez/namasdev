@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,13 @@ namespace namasdev.Core.UnitTests._TestUtils
 {
     public class Objeto
     {
+        public const string TEXTO_DESCRIPCION = "Descripción del texto";
+        public const string TEXTO_CATEGORIA = "Propiedades";
+
+        [Description(TEXTO_DESCRIPCION),
+        Category(TEXTO_CATEGORIA)]
+        public string CampoTexto;
+
         public Objeto()
         {
         }
@@ -20,6 +28,8 @@ namespace namasdev.Core.UnitTests._TestUtils
             this.FechaHora = fechaHora;
         }
 
+        [Description(TEXTO_DESCRIPCION),
+        Category(TEXTO_CATEGORIA)]
         public string Texto { get; set; }
         public int? Entero { get; set; }
         public Guid? Guid { get; set; }

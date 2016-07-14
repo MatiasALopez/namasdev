@@ -78,5 +78,46 @@ namespace namasdev.Reflection
             return !ObtenerPropiedadesDeTipo(typeof(T))
                 .Any(p => !object.Equals(p.GetValue(objeto), ObtenerValorDefault(p.PropertyType)));
         }
+
+        public static TAtributo ObtenerAtributoDeCampo<TAtributo>(Type tipo, string nombreCampo)
+            where TAtributo : Attribute
+        {
+            Validador.ValidarRequerido(tipo, "tipo");
+            Validador.ValidarRequerido(nombreCampo, "nombreCampo");
+
+            var campo = tipo.GetField(nombreCampo);
+            if (campo == null)
+            {
+                throw new MissingMemberException(tipo.FullName, nombreCampo);
+            }
+
+            return ObtenerAtributoDeMiembro<TAtributo>(campo);
+        }
+
+        public static TAtributo ObtenerAtributoDePropiedad<TAtributo>(Type tipo, string nombrePropiedad)
+           where TAtributo : Attribute
+        {
+            Validador.ValidarRequerido(tipo, "tipo");
+            Validador.ValidarRequerido(nombrePropiedad, "nombrePropiedad");
+
+            var propiedad = tipo.GetProperty(nombrePropiedad);
+            if (propiedad == null)
+            {
+                throw new MissingMemberException(tipo.FullName, nombrePropiedad);
+            }
+
+            return ObtenerAtributoDeMiembro<TAtributo>(propiedad);
+        }
+
+        private static TAtributo ObtenerAtributoDeMiembro<TAtributo>(MemberInfo miembro)
+          where TAtributo : Attribute
+        {
+            Validador.ValidarRequerido(miembro, "miembro");
+
+            var atributo = miembro.GetCustomAttributes(typeof(TAtributo), false);
+            return atributo != null && atributo.Length > 0
+                ? (TAtributo)atributo.FirstOrDefault()
+                : null;
+        }
     }
 }

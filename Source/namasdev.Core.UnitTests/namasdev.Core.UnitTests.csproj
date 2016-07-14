@@ -56,8 +56,11 @@
   <ItemGroup>
     <Compile Include="Reflection\ReflectionUtilidadesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tipos\StringUtilidadesTest.cs" />
+    <Compile Include="_TestUtils\Enumeracion.cs" />
     <Compile Include="_TestUtils\Objeto.cs" />
     <Compile Include="_TestUtils\ObjetoConPropiedadesNoNullables.cs" />
+    <Compile Include="_TestUtils\ObjetoDerivado.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Core\namasdev.Core.csproj">
