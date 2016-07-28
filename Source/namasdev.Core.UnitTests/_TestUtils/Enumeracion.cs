@@ -16,6 +16,8 @@ namespace namasdev.Core.UnitTests._TestUtils
         Opcion2 = 2,
 
         [Description("Opción 3")]
-        Opcion3 = 3
+        Opcion3 = 3,
+
+        Opcion4 = 4
     }
 }

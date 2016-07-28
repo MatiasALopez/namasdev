@@ -14,11 +14,17 @@ namespace namasdev.Validaciones
 {
     public class Validador
     {
-        public static void ValidarRequerido(object valor, string nombre)
+        public static void ValidarRequerido(object valor, string mensaje)
+        {
+            ValidarRequerido<ArgumentNullException>(valor, mensaje);
+        }
+
+        public static void ValidarRequerido<TException>(object valor, string mensaje)
+            where TException : Exception
         {
             if (String.IsNullOrWhiteSpace(Convert.ToString(valor)))
             {
-                throw new ArgumentNullException(nombre);
+                throw ReflectionUtilidades.CrearInstancia<TException>(mensaje);
             }
         }
 

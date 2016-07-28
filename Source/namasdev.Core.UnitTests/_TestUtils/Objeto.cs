@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace namasdev.Core.UnitTests._TestUtils
 {
-    public class Objeto
+    public class Objeto : IValidatableObject
     {
         public const string TEXTO_DESCRIPCION = "Descripción del texto";
         public const string TEXTO_CATEGORIA = "Propiedades";
@@ -31,8 +32,14 @@ namespace namasdev.Core.UnitTests._TestUtils
         [Description(TEXTO_DESCRIPCION),
         Category(TEXTO_CATEGORIA)]
         public string Texto { get; set; }
+
+        [Required,
+        Range(1, 100)]
         public int? Entero { get; set; }
+        
         public Guid? Guid { get; set; }
+        
+        [Required]
         public DateTime? FechaHora { get; set; }
 
         public override bool Equals(object obj)
@@ -47,7 +54,18 @@ namespace namasdev.Core.UnitTests._TestUtils
 
         public override int GetHashCode()
         {
-            return this.Texto.GetHashCode() ^ this.Entero.GetHashCode() ^ this.Guid.GetHashCode() ^ this.FechaHora.GetHashCode();
+            return (this.Texto ?? String.Empty).GetHashCode() 
+                ^ (this.Entero ?? 0).GetHashCode() 
+                ^ (this.Guid ?? System.Guid.Empty).GetHashCode() 
+                ^ (this.FechaHora ?? default(DateTime)).GetHashCode();
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (String.IsNullOrWhiteSpace(Texto) && !Guid.HasValue)
+            {
+                yield return new ValidationResult("Debe especificar un valor para al menos una de las Propiedades: Texto o Guid.");
+            }
         }
     }
 }

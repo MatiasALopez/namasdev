@@ -19,7 +19,7 @@ namespace namasdev.Templates
             this.Contenido = contenido;
         }
 
-        public string Nombre { get; set; }
-        public string Contenido { get; set; }
+        public string Nombre { get; private set; }
+        public string Contenido { get; private set; }
     }
 }

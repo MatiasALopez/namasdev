@@ -44,6 +44,7 @@
     <Compile Include="Excepciones\ExcepcionMensajeAlUsuario.cs" />
     <Compile Include="IO\Archivo.cs" />
     <Compile Include="IO\IRepositorioArchivos.cs" />
+    <Compile Include="IO\StreamExtensiones.cs" />
     <Compile Include="Linq\IQueryableExtensions.cs" />
     <Compile Include="Linq\PaginacionYOrdenamientoParametros.cs" />
     <Compile Include="Templates\IRepositorioPlantillas.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Reflection\ReflectionUtilidades.cs" />
     <Compile Include="Tipos\DateTimeUtilidades.cs" />
     <Compile Include="Tipos\EnumExtensiones.cs" />
+    <Compile Include="Tipos\NameValueCollectionExtensiones.cs" />
     <Compile Include="Tipos\StringUtilidades.cs" />
     <Compile Include="Transacciones\TransactionScopeFactory.cs" />
     <Compile Include="Validaciones\EnumValidoAttribute.cs" />

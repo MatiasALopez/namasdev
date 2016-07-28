@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{28630B52-E30B-4BE4-80E2-82C20276EF5B}</ProjectGuid>
+    <ProjectGuid>{8B6FAE1E-F767-4ED6-8E47-0564919C8370}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>namasdev.Core.UnitTests</RootNamespace>
-    <AssemblyName>namasdev.Core.UnitTests</AssemblyName>
+    <RootNamespace>namasdev.Net.UnitTests</RootNamespace>
+    <AssemblyName>namasdev.Net.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,12 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FizzWare.NBuilder, Version=3.0.1.0, Culture=neutral, PublicKeyToken=5651b03e12e42c12, processorArchitecture=MSIL">
-      <HintPath>..\packages\NBuilder.3.0.1.1\lib\FizzWare.NBuilder.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -55,37 +50,21 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="IO\StreamExtensionesTest.cs" />
-    <Compile Include="Reflection\ReflectionUtilidadesTest.cs" />
+    <Compile Include="Correos\CorreoParametrosTest.cs" />
+    <Compile Include="Correos\GeneradorDeCorreosTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tipos\EnumExtensionesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tipos\DateTimeUtilidadesTest.cs" />
-    <Compile Include="Tipos\NameValueCollectionExtensionesTest.cs" />
-    <Compile Include="Tipos\StringUtilidadesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Validaciones\EnumValidoAttributeTest.cs" />
-    <Compile Include="Validaciones\ValidadorTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="_TestUtils\Enumeracion.cs" />
-    <Compile Include="_TestUtils\Objeto.cs" />
-    <Compile Include="_TestUtils\ObjetoConEnum.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="_TestUtils\ObjetoConPropiedadesNoNullables.cs" />
-    <Compile Include="_TestUtils\ObjetoDerivado.cs" />
+    <Compile Include="_TestUtils\GeneradorDeContenidoSinLogica.cs" />
+    <Compile Include="_TestUtils\RepositorioPlantillaEnMemoria.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Core\namasdev.Core.csproj">
       <Project>{90fa6a5f-551c-4f32-b1d4-25da49449302}</Project>
       <Name>namasdev.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\namasdev.Net\namasdev.Net.csproj">
+      <Project>{47fdc26e-600c-4e75-9fab-b1050d9da66d}</Project>
+      <Name>namasdev.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

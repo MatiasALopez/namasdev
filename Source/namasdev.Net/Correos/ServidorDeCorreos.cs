@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Confidenza.Infraestructura.Correos
+namespace namasdev.Net.Correos
 {
     public class ServidorDeCorreos : IServidorDeCorreos, IDisposable
     {

@@ -40,9 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Correos\CorreoParametros.cs" />
-    <Compile Include="Correos\IServicioGeneradorDeCorreos.cs" />
+    <Compile Include="Correos\IGeneradorDeCorreos.cs" />
     <Compile Include="Correos\IServidorDeCorreos.cs" />
-    <Compile Include="Correos\ServicioGeneradorDeCorreos.cs" />
+    <Compile Include="Correos\GeneradorDeCorreos.cs" />
     <Compile Include="Correos\ServidorDeCorreos.cs" />
     <Compile Include="Correos\ServidorDeCorreosParametros.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

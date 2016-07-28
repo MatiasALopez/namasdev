@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "namasdev.Web.Forms", "namas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "namasdev.Net", "namasdev.Net\namasdev.Net.csproj", "{47FDC26E-600C-4E75-9FAB-B1050D9DA66D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "namasdev.Net.UnitTests", "namasdev.Net.UnitTests\namasdev.Net.UnitTests.csproj", "{8B6FAE1E-F767-4ED6-8E47-0564919C8370}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{47FDC26E-600C-4E75-9FAB-B1050D9DA66D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47FDC26E-600C-4E75-9FAB-B1050D9DA66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47FDC26E-600C-4E75-9FAB-B1050D9DA66D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B6FAE1E-F767-4ED6-8E47-0564919C8370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B6FAE1E-F767-4ED6-8E47-0564919C8370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B6FAE1E-F767-4ED6-8E47-0564919C8370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B6FAE1E-F767-4ED6-8E47-0564919C8370}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +73,6 @@ Global
 		{B2BAD3BE-53B6-4A3F-A82C-A1B6D44D5D90} = {233F2F1B-154F-4ADB-9F01-BA816FE09C1C}
 		{C1B5CBBB-C09E-42F5-9AD2-D970AECC07B7} = {233F2F1B-154F-4ADB-9F01-BA816FE09C1C}
 		{47FDC26E-600C-4E75-9FAB-B1050D9DA66D} = {233F2F1B-154F-4ADB-9F01-BA816FE09C1C}
+		{8B6FAE1E-F767-4ED6-8E47-0564919C8370} = {96D0A3DF-D333-43D9-976F-7AC459AAC08A}
 	EndGlobalSection
 EndGlobal
