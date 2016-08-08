@@ -45,6 +45,12 @@
     <Compile Include="Correos\GeneradorDeCorreos.cs" />
     <Compile Include="Correos\ServidorDeCorreos.cs" />
     <Compile Include="Correos\ServidorDeCorreosParametros.cs" />
+    <Compile Include="Ftp\FtpDirectorio.cs" />
+    <Compile Include="Ftp\FtpArchivo.cs" />
+    <Compile Include="Ftp\FtpCliente.cs" />
+    <Compile Include="Ftp\FtpEntradaUtilidades.cs" />
+    <Compile Include="Ftp\FtpException.cs" />
+    <Compile Include="Ftp\IFtpEntrada.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
