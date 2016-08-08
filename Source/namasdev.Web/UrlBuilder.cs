@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using namasdev.Tipos;
 using namasdev.Validaciones;
-using System.Text.RegularExpressions;
 
 namespace namasdev.Web
 {

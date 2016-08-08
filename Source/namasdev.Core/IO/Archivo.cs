@@ -1,11 +1,12 @@
-﻿using namasdev.Validaciones;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace namasdev.Archivos
+using namasdev.Validaciones;
+
+namespace namasdev.IO
 {
     public class Archivo
     {
@@ -20,5 +21,10 @@ namespace namasdev.Archivos
 
         public string Nombre { get; private set; }
         public byte[] Contenido { get; set; }
+
+        public override string ToString()
+        {
+            return this.Nombre;
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using namasdev.Core.Tipos;
 using System.Collections.Specialized;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using namasdev.Tipos;
 
 namespace namasdev.Core.UnitTests.Tipos
 {
