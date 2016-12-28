@@ -51,7 +51,7 @@ namespace namasdev.Validaciones
             var errores = ObtenerErroresDeValidacion(objeto);
             if (errores.Any())
             {
-                throw ReflectionUtilidades.CrearInstancia<TException>(GenerarMensaje(mensajeEncabezado, StringUtilidades.CrearTextoDesdeLista(errores, separador: Environment.NewLine)));
+                throw ReflectionUtilidades.CrearInstancia<TException>(GenerarMensaje(mensajeEncabezado, errores.CrearTextoDesdeLista(separador: Environment.NewLine)));
             }
         }
         
@@ -62,7 +62,7 @@ namespace namasdev.Validaciones
                 return mensaje;
             }
 
-            return StringUtilidades.CrearTextoDesdeLista(new string[] { encabezado, mensaje }, separador: Environment.NewLine);
+            return new string[] { encabezado, mensaje }.CrearTextoDesdeLista(separador: Environment.NewLine);
         }
     }
 }

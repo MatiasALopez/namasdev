@@ -63,7 +63,7 @@
     </Compile>
     <Compile Include="Tipos\DateTimeUtilidadesTest.cs" />
     <Compile Include="Tipos\NameValueCollectionExtensionesTest.cs" />
-    <Compile Include="Tipos\StringUtilidadesTest.cs">
+    <Compile Include="Tipos\StringExtensionesTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Validaciones\EnumValidoAttributeTest.cs" />

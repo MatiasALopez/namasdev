@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\namasdev.Core.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -55,7 +56,7 @@
     <Compile Include="Tipos\DateTimeUtilidades.cs" />
     <Compile Include="Tipos\EnumExtensiones.cs" />
     <Compile Include="Tipos\NameValueCollectionExtensiones.cs" />
-    <Compile Include="Tipos\StringUtilidades.cs" />
+    <Compile Include="Tipos\StringExtensiones.cs" />
     <Compile Include="Transacciones\TransactionScopeFactory.cs" />
     <Compile Include="Validaciones\EnumValidoAttribute.cs" />
     <Compile Include="Validaciones\Validador.cs" />
