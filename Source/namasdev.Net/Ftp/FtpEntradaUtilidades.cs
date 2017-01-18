@@ -36,9 +36,37 @@ namespace namasdev.Net.Ftp
             return Path.GetFileName(nombreEntrada);
         }
 
+        public static string ObtenerDireccionCompletaDirectorio(string[] nombresDirectorios)
+        {
+            if (nombresDirectorios == null)
+            {
+                return String.Empty;
+            }
+
+            return CombinarPartesUri(nombresDirectorios
+                .Where(it => !String.IsNullOrWhiteSpace(it))
+                .Select(it => it.TrimEnd(SEPARADOR_URI.ToCharArray()))
+                .ToArray());
+        }
+
         public static Uri CrearEntradaUri(Uri uriBase, string nombreDirectorio, string nombreEntrada)
         {
             return new Uri(uriBase, CombinarPartesUri(nombreDirectorio, nombreEntrada));
+        }
+
+        public static Uri CrearDirectorioUri(Uri uriBase, string direccionCompletaDirectorio)
+        {
+            if (String.IsNullOrWhiteSpace(direccionCompletaDirectorio))
+            {
+                return uriBase;
+            }
+
+            if (!direccionCompletaDirectorio.EndsWith(SEPARADOR_URI))
+            {
+                direccionCompletaDirectorio += SEPARADOR_URI;
+            }
+
+            return new Uri(uriBase, direccionCompletaDirectorio);
         }
 
         public static string CombinarPartesUri(params string[] partesUri)

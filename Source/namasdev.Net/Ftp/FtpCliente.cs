@@ -12,6 +12,7 @@ namespace namasdev.Net.Ftp
 {
     public class FtpCliente
     {
+        private const int CARGA_ARCHIVO_TAMAÑO_BUFFER = 2048;
         private const int DESCARGA_ARCHIVO_TAMAÑO_BUFFER = 2048;
 
         public FtpCliente(Uri uri)
@@ -77,7 +78,7 @@ namespace namasdev.Net.Ftp
 
             using (var response = (FtpWebResponse)request.GetResponse())
             {
-                ValidarResponseSinErrores(response);
+                ValidarResponseConStatusCodeEsperado(response);
 
                 using (var responseStream = response.GetResponseStream())
                 using (var fileStream = new FileStream(pathArchivoDestino, FileMode.Create))
@@ -103,7 +104,7 @@ namespace namasdev.Net.Ftp
 
             using (var response = (FtpWebResponse)request.GetResponse())
             {
-                ValidarResponseSinErrores(response);
+                ValidarResponseConStatusCodeEsperado(response);
             }
         }
 
@@ -113,7 +114,69 @@ namespace namasdev.Net.Ftp
             
             using (var response = (FtpWebResponse)request.GetResponse())
             {
-                ValidarResponseSinErrores(response);
+                ValidarResponseConStatusCodeEsperado(response);
+            }
+        }
+
+        public void CrearDirectorioSiNoExiste(string[] directories)
+        {
+            var uri = FtpEntradaUtilidades.CrearDirectorioUri(
+                uriBase: this.Uri,
+                direccionCompletaDirectorio: FtpEntradaUtilidades.ObtenerDireccionCompletaDirectorio(directories)
+            );
+
+            try
+            {
+                var request = CrearRequestConCredenciales(uri, WebRequestMethods.Ftp.MakeDirectory);
+
+                using (var response = (FtpWebResponse)request.GetResponse())
+                {
+                    ValidarResponseConStatusCodeEsperado(response, FtpStatusCode.PathnameCreated);
+                }
+            }
+            catch (WebException ex)
+            {
+                // This happens when the folder is already created...
+                if (ex.Status != WebExceptionStatus.ProtocolError)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public void CargarArchivo(string pathArchivo,
+            string nombreArchivo = null, string[] directories = null)
+        {
+            var uri = FtpEntradaUtilidades.CrearEntradaUri(
+                uriBase: this.Uri,
+                nombreDirectorio: FtpEntradaUtilidades.CombinarPartesUri(directories),
+                nombreEntrada: nombreArchivo ?? Path.GetFileName(pathArchivo)
+            );
+
+            var request = CrearRequestConCredenciales(uri, WebRequestMethods.Ftp.UploadFile);
+
+            request.UseBinary = true;
+            request.Proxy = null;
+
+            using (var requestStream = request.GetRequestStream())
+            using (var fileStream = System.IO.File.OpenRead(pathArchivo))
+            {
+                byte[] buffer = new byte[CARGA_ARCHIVO_TAMAÑO_BUFFER];
+                while (true)
+                {
+                    int readCount = fileStream.Read(buffer, 0, buffer.Length);
+                    if (readCount == 0)
+                    {
+                        break;
+                    }
+
+                    requestStream.Write(buffer, 0, readCount);
+                }
+            }
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                ValidarResponseConStatusCodeEsperado(response, FtpStatusCode.ClosingData);
             }
         }
 
@@ -130,9 +193,10 @@ namespace namasdev.Net.Ftp
             return request;
         }
 
-        private void ValidarResponseSinErrores(FtpWebResponse response)
+        private void ValidarResponseConStatusCodeEsperado(FtpWebResponse response,
+            FtpStatusCode statusCodeEsperado = FtpStatusCode.FileActionOK)
         {
-            if (response.StatusCode != FtpStatusCode.FileActionOK)
+            if (response.StatusCode != statusCodeEsperado)
             {
                 throw new FtpException(response.StatusCode, response.StatusDescription);
             }
