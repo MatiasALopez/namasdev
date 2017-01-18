@@ -13,6 +13,8 @@ namespace namasdev.Core.UnitTests._TestUtils
         public const string TEXTO_DESCRIPCION = "Descripción del texto";
         public const string TEXTO_CATEGORIA = "Propiedades";
 
+        public const int ENTERO_RANGO_MINIMO = 1;
+
         [Description(TEXTO_DESCRIPCION),
         Category(TEXTO_CATEGORIA)]
         public string CampoTexto;
@@ -34,7 +36,7 @@ namespace namasdev.Core.UnitTests._TestUtils
         public string Texto { get; set; }
 
         [Required,
-        Range(1, 100)]
+        Range(ENTERO_RANGO_MINIMO, 100)]
         public int? Entero { get; set; }
         
         public Guid? Guid { get; set; }

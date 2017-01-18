@@ -10,6 +10,11 @@ namespace namasdev.Reflection
 {
     public class ReflectionUtilidades
     {
+        public static object ObtenerValorDefault<T>()
+        {
+            return ObtenerValorDefault(typeof(T));
+        }
+
         public static object ObtenerValorDefault(Type tipo)
         {
             Validador.ValidarRequerido(tipo, "tipo");
@@ -35,7 +40,7 @@ namespace namasdev.Reflection
 
             Type tipo = typeof(T);
             //
-            foreach (var pi in ObtenerPropiedadesDeTipo(tipo))
+            foreach (var pi in ObtenerPropiedades(tipo))
             {
                 object obj1Value = tipo.GetProperty(pi.Name).GetValue(obj1, null);
                 object obj2Value = tipo.GetProperty(pi.Name).GetValue(obj2, null);
@@ -49,9 +54,30 @@ namespace namasdev.Reflection
             return true;
         }
 
-        private static PropertyInfo[] ObtenerPropiedadesDeTipo(Type tipo)
+        public static PropertyInfo[] ObtenerPropiedades<T>()
         {
-            return tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            return ObtenerPropiedades(typeof(T));
+        }
+
+        public static PropertyInfo[] ObtenerPropiedades(Type tipoClase)
+        {
+            Validador.ValidarRequerido(tipoClase, "tipoClase");
+
+            return tipoClase.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        }
+
+        public static PropertyInfo[] ObtenerPropiedadesDeTipo<TClase, TPropiedad>()
+        {
+            return ObtenerPropiedadesDeTipo(typeof(TClase), typeof(TPropiedad));
+        }
+
+        public static PropertyInfo[] ObtenerPropiedadesDeTipo(Type tipoClase, Type tipoPropiedad)
+        {
+            Validador.ValidarRequerido(tipoPropiedad, "tipoPropiedad");
+
+            return ObtenerPropiedades(tipoClase)
+                .Where(p => p.PropertyType == tipoPropiedad)
+                .ToArray();
         }
 
         public static T CrearInstancia<T>(params object[] parametrosConstructor)
@@ -65,7 +91,7 @@ namespace namasdev.Reflection
         {
             Validador.ValidarRequerido(objeto, "objeto");
 
-            return !ObtenerPropiedadesDeTipo(typeof(T))
+            return !ObtenerPropiedades(typeof(T))
                 .Select(p => p.GetValue(objeto))
                 .Any(v => v != null && !String.IsNullOrWhiteSpace(Convert.ToString(v)));
         }
@@ -75,49 +101,95 @@ namespace namasdev.Reflection
         {
             Validador.ValidarRequerido(objeto, "objeto");
 
-            return !ObtenerPropiedadesDeTipo(typeof(T))
+            return !ObtenerPropiedades(typeof(T))
                 .Any(p => !object.Equals(p.GetValue(objeto), ObtenerValorDefault(p.PropertyType)));
         }
 
-        public static TAtributo ObtenerAtributoDeCampo<TAtributo>(Type tipo, string nombreCampo)
+        public static TAtributo ObtenerAtributoDeCampo<TAtributo>(Type tipoClase, string nombreCampo)
             where TAtributo : Attribute
         {
-            Validador.ValidarRequerido(tipo, "tipo");
+            Validador.ValidarRequerido(tipoClase, "tipoClase");
             Validador.ValidarRequerido(nombreCampo, "nombreCampo");
 
-            var campo = tipo.GetField(nombreCampo);
+            var campo = tipoClase.GetField(nombreCampo);
             if (campo == null)
             {
-                throw new MissingMemberException(tipo.FullName, nombreCampo);
+                throw new MissingMemberException(tipoClase.FullName, nombreCampo);
             }
 
             return ObtenerAtributoDeMiembro<TAtributo>(campo);
         }
 
-        public static TAtributo ObtenerAtributoDePropiedad<TAtributo>(Type tipo, string nombrePropiedad)
+        public static TAtributo ObtenerAtributoDePropiedad<TAtributo>(Type tipoClase, string nombrePropiedad)
            where TAtributo : Attribute
         {
-            Validador.ValidarRequerido(tipo, "tipo");
+            Validador.ValidarRequerido(tipoClase, "tipoClase");
             Validador.ValidarRequerido(nombrePropiedad, "nombrePropiedad");
 
-            var propiedad = tipo.GetProperty(nombrePropiedad);
+            var propiedad = tipoClase.GetProperty(nombrePropiedad);
             if (propiedad == null)
             {
-                throw new MissingMemberException(tipo.FullName, nombrePropiedad);
+                throw new MissingMemberException(tipoClase.FullName, nombrePropiedad);
             }
 
             return ObtenerAtributoDeMiembro<TAtributo>(propiedad);
         }
 
-        private static TAtributo ObtenerAtributoDeMiembro<TAtributo>(MemberInfo miembro)
+        private static TAtributo ObtenerAtributoDeMiembro<TAtributo>(MemberInfo miembro,
+            Func<TAtributo, bool> condicionAtributo = null)
           where TAtributo : Attribute
         {
             Validador.ValidarRequerido(miembro, "miembro");
 
-            var atributo = miembro.GetCustomAttributes(typeof(TAtributo), false);
-            return atributo != null && atributo.Length > 0
-                ? (TAtributo)atributo.FirstOrDefault()
-                : null;
+            var atributos = miembro.GetCustomAttributes(typeof(TAtributo), false);
+            if (atributos == null || atributos.Length == 0)
+            {
+                return null;
+            }
+
+            var atributo = (TAtributo)atributos.FirstOrDefault();
+            if (condicionAtributo != null && !condicionAtributo(atributo))
+            {
+                return null;
+            }
+
+            return atributo;
+        }
+
+        public static PropertyInfo[] ObtenerPropiedadesConAtributo<TClase, TAtributo>(
+            Func<TAtributo, bool> condicionAtributo = null)
+            where TAtributo : Attribute
+        {
+            return ObtenerPropiedadesConAtributo<TAtributo>(typeof(TClase), condicionAtributo);
+        }
+
+        public static PropertyInfo[] ObtenerPropiedadesConAtributo<TAtributo>(Type tipoClase,
+            Func<TAtributo, bool> condicionAtributo = null)
+            where TAtributo : Attribute
+        {
+            Validador.ValidarRequerido(tipoClase, "tipoClase");
+
+            return ObtenerPropiedades(tipoClase)
+                .Where(p => ObtenerAtributoDeMiembro<TAtributo>(p, condicionAtributo) != null)
+                .ToArray();
+        }
+
+        public static PropertyInfo[] ObtenerPropiedadesDeTipoConAtributo<TClase, TPropiedad, TAtributo>(
+            Func<TAtributo, bool> condicionAtributo = null)
+           where TAtributo : Attribute
+        {
+            return ObtenerPropiedadesDeTipoConAtributo<TAtributo>(typeof(TClase), typeof(TPropiedad), condicionAtributo);
+        }
+
+        public static PropertyInfo[] ObtenerPropiedadesDeTipoConAtributo<TAtributo>(Type tipoClase, Type tipoPropiedad,
+            Func<TAtributo, bool> condicionAtributo = null)
+           where TAtributo : Attribute
+        {
+            Validador.ValidarRequerido(tipoClase, "tipoClase");
+
+            return ObtenerPropiedadesDeTipo(tipoClase, tipoPropiedad)
+                .Where(p => ObtenerAtributoDeMiembro<TAtributo>(p, condicionAtributo) != null)
+                .ToArray();
         }
     }
 }
