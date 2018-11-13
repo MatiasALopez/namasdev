@@ -15,10 +15,14 @@ namespace namasdev.Linq
             Validador.ValidarRequerido(query, "query");
             Validador.ValidarRequerido(parametros, "parametros");
 
+            const string ORDENAMIENTO_SUFIJO_DESC = " desc";
             if (!String.IsNullOrWhiteSpace(parametros.ExpresionOrdenamiento))
             {
-                bool esOrdenDescendente = parametros.ExpresionOrdenamiento.EndsWith(" DESC");
-                string nombrePropiedad = parametros.ExpresionOrdenamiento.TrimEnd(" DESC".ToCharArray());
+                bool esOrdenDescendente = parametros.ExpresionOrdenamiento.EndsWith(ORDENAMIENTO_SUFIJO_DESC, StringComparison.CurrentCultureIgnoreCase);
+                string nombrePropiedad =
+                    esOrdenDescendente
+                    ? parametros.ExpresionOrdenamiento.Remove(parametros.ExpresionOrdenamiento.Length - ORDENAMIENTO_SUFIJO_DESC.Length)
+                    : parametros.ExpresionOrdenamiento;
 
                 var tipo = typeof(T);
                 var prop = tipo.GetProperty(nombrePropiedad);
@@ -40,12 +44,17 @@ namespace namasdev.Linq
                 query = query.Provider.CreateQuery<T>(resultExp);
             }
 
-            if (parametros.CantMaximaRegistrosPorPagina.HasValue && parametros.DesdeIndice.HasValue)
+            if (parametros.CantMaximaRegistrosPorPagina > 0)
             {
                 parametros.CantTotalRegistros = query.Count();
+
+                int skip =
+                    parametros.Pagina > 0
+                    ? (parametros.Pagina - 1) * parametros.CantMaximaRegistrosPorPagina
+                    : 0;
                 query = query
-                    .Skip(parametros.DesdeIndice.Value)
-                    .Take(parametros.CantMaximaRegistrosPorPagina.Value);
+                    .Skip(skip)
+                    .Take(parametros.CantMaximaRegistrosPorPagina);
             }
 
             return query;
