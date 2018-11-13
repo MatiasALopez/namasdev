@@ -48,12 +48,8 @@ namespace namasdev.Linq
             {
                 parametros.CantTotalRegistros = query.Count();
 
-                int skip =
-                    parametros.Pagina > 0
-                    ? (parametros.Pagina - 1) * parametros.CantMaximaRegistrosPorPagina
-                    : 0;
                 query = query
-                    .Skip(skip)
+                    .Skip(parametros.DesdeIndice)
                     .Take(parametros.CantMaximaRegistrosPorPagina);
             }
 
