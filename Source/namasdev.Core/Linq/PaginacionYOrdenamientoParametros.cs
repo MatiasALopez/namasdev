@@ -8,18 +8,25 @@ namespace namasdev.Linq
 {
     public class PaginacionYOrdenamientoParametros
     {
-        private int _pagina;
+        private int _desdeIndice;
         private int _cantMaximaRegistrosPorPagina;
 
         public PaginacionYOrdenamientoParametros()
         {
-            _pagina = _cantMaximaRegistrosPorPagina = 1;
+            _desdeIndice = 0;
+            _cantMaximaRegistrosPorPagina = 1;
         }
 
-        public int Pagina
+        public PaginacionYOrdenamientoParametros(int pagina, int cantMaximaRegistrosPorPagina)
         {
-            get { return _pagina; }
-            set { _pagina = Math.Max(value, 1); }
+            CantMaximaRegistrosPorPagina = cantMaximaRegistrosPorPagina;
+            DesdeIndice = (pagina - 1) * CantMaximaRegistrosPorPagina;
+        }
+
+        public int DesdeIndice
+        {
+            get { return _desdeIndice; }
+            set { _desdeIndice = Math.Max(value, 0); }
         }
 
         public int CantMaximaRegistrosPorPagina
