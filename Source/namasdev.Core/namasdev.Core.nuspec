@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>namasdev.Core</id>
+    <version>0.1.0</version>
+    <title>namasdev Core</title>
+    <authors>Matias Alberto Lopez</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/MatiasALopez/namasdev</projectUrl>
+    <description>namasdev Core library</description>
+    <releaseNotes></releaseNotes>
+    <copyright>2016</copyright>
+    <tags>namasdev</tags>
+  </metadata>
+</package>
